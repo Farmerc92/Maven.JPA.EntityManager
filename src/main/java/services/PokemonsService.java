@@ -32,7 +32,7 @@ public class PokemonsService {
         return pokemon;
     }
 
-    public Pokemons findCookbook(long id){
+    public Pokemons findPokemons(long id){
         return entityManager.find(Pokemons.class, id);
     }
 
@@ -40,6 +40,24 @@ public class PokemonsService {
         CriteriaQuery<Pokemons> criteria = entityManager.getCriteriaBuilder().createQuery(Pokemons.class);
         criteria.select(criteria.from(Pokemons.class));
         return entityManager.createQuery(criteria).getResultList();
+    }
+
+    public Pokemons updatePokemons(long id, String name, int primaryType, int secondaryType){
+        Pokemons pokemon = findPokemons(id);
+        entityTransaction.begin();
+        pokemon.setName(name);
+        pokemon.setPrimaryType(primaryType);
+        pokemon.setSecondaryType(secondaryType);
+        entityTransaction.commit();
+        return pokemon;
+    }
+
+    public Pokemons deletePokemons(long id){
+        Pokemons pokemon = findPokemons(id);
+        entityTransaction.begin();
+        entityManager.remove(pokemon);
+        entityTransaction.commit();
+        return pokemon;
     }
 
 
